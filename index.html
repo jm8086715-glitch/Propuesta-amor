@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una pregunta para ti 💗</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #ffb6c9, #ffe4ec, #fff);
+}
+
+.card {
+    position: relative;
+    width: min(92%, 520px);
+    padding: 45px 25px;
+    text-align: center;
+    background: rgba(255,255,255,0.94);
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(100,30,60,0.25);
+    overflow: hidden;
+}
+
+.heart-main {
+    font-size: 70px;
+    animation: floating 2s infinite ease-in-out;
+}
+
+h1 {
+    color: #421f2b;
+    font-size: clamp(30px, 8vw, 48px);
+    margin: 15px 0;
+}
+
+.message {
+    color: #76505c;
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+    min-width: 130px;
+    min-height: 52px;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+#yes {
+    color: white;
+    background: #ff4f81;
+    box-shadow: 0 8px 20px rgba(255,79,129,.35);
+}
+
+#no {
+    color: #633c48;
+    background: #eee1e6;
+}
+
+#result {
+    margin-top: 25px;
+    min-height: 30px;
+    color: #c52d5c;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.rain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.falling-heart {
+    position: absolute;
+    top: -50px;
+    animation: falling linear forwards;
+}
+
+@keyframes floating {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes falling {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(700px) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div id="rain" class="rain"></div>
+
+    <div class="heart-main">
+        💗
+    </div>
+
+    <h1 id="question">
+        ¿Puedo ser tu novio?
+    </h1>
+
+    <p id="message" class="message">
+        Tengo una pregunta importante para ti... 🫶
+    </p>
+
+    <div class="buttons">
+
+        <button id="yes">
+            Sí 💕
+        </button>
+
+        <button id="no">
+            No 😢
+        </button>
+
+    </div>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+const yesButton = document.getElementById("yes");
+const noButton = document.getElementById("no");
+
+const question = document.getElementById("question");
+const message = document.getElementById("message");
+const result = document.getElementById("result");
+
+const rain = document.getElementById("rain");
+
+let answered = false;
+
+
+/* LLUVIA DE CORAZONES */
+
+function heartRain() {
+
+    const hearts = [
+        "❤️",
+        "💗",
+        "💕",
+        "💖",
+        "💘",
+        "💝"
+    ];
+
+    for (let i = 0; i < 70; i++) {
+
+        const heart = document.createElement("span");
+
+        heart.className = "falling-heart";
+
+        heart.textContent =
+            hearts[Math.floor(Math.random() * hearts.length)];
+
+        heart.style.left =
+            Math.random() * 100 + "%";
+
+        heart.style.fontSize =
+            (15 + Math.random() * 25) + "px";
+
+        heart.style.animationDuration =
+            (2 + Math.random() * 3) + "s";
+
+        heart.style.animationDelay =
+            Math.random() * 2 + "s";
+
+        rain.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 6000);
+    }
+}
+
+
+/* BOTÓN SÍ */
+
+yesButton.addEventListener("click", () => {
+
+    if (answered) return;
+
+    answered = true;
+
+    /* El Sí se hace grande */
+
+    yesButton.style.transform =
+        "scale(1.7)";
+
+    yesButton.style.zIndex = "10";
+
+    /* El No desaparece */
+
+    noButton.style.opacity = "0";
+
+    noButton.style.transform =
+        "scale(0.3)";
+
+    noButton.style.pointerEvents =
+        "none";
+
+    setTimeout(() => {
+        noButton.style.display = "none";
+    }, 500);
+
+
+    /* Cambiar mensaje */
+
+    question.textContent =
+        "¡Sabía que dirías que sí! 🥹❤️";
+
+    message.textContent =
+        "Entonces... oficialmente tenemos una historia que comenzar. 💕";
+
+    result.textContent =
+        "Te prometo cuidar mucho este amor. 🫶";
+
+
+    /* Lluvia de corazones */
+
+    heartRain();
+
+});
+
+
+/* BOTÓN NO */
+
+noButton.addEventListener("click", () => {
+
+    if (answered) return;
+
+    message.textContent =
+        "Está bien... respeto tu respuesta 😌";
+
+    result.textContent =
+        "Pero tenía que intentarlo. 🥹";
+
+    noButton.textContent =
+        "¿Segura? 🥺";
+
+});
+
+</script>
+
+</body>
+</html>
